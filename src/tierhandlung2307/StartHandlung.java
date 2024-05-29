@@ -87,7 +87,7 @@ public class StartHandlung {
 	}
 
 	private void menu3() {
-		deleteAnimal();
+//		deleteAnimal();
 
 	}
 
@@ -164,26 +164,26 @@ public class StartHandlung {
 //		return newAnimal;
 //	}
 
-	private void deleteAnimal() {
-
-		System.out.println("Welches Tier soll gelöscht werden? \nGeben Sie die Nummer ein: ");
-		for (int i = 0; i < this.tierListe.size(); i++) {
-			if (this.tierListe.get(i) != null) {
-				System.out.println(tierListe.get(i).deleteAusgabe(i) );
-				System.out.println("-----------------------------");
-			}
-
-		}
-
-		Scanner sc = new Scanner(System.in);
-		int deleteNum = Integer.parseInt(sc.nextLine())-1;
-		if (deleteNum >= 0 && deleteNum < tierListe.size()) {
-			String deletedAnimal = tierListe.get(deleteNum).deleteAusgabe(deleteNum);
-			tierListe.remove(deleteNum);
-			System.out.println(deletedAnimal + " wurde erfolgreich gelöscht.");
-		} else {
-			System.out.println("Ungültige Eingabe");
-		}
-	}
+//	private void deleteAnimal() {
+//
+//		System.out.println("Welches Tier soll gelöscht werden? \nGeben Sie die Nummer ein: ");
+//		for (int i = 0; i < this.tierListe.size(); i++) {
+//			if (this.tierListe.get(i) != null) {
+//				System.out.println(tierListe.get(i).deleteAusgabe(i) );
+//				System.out.println("-----------------------------");
+//			}
+//
+//		}
+//
+//		Scanner sc = new Scanner(System.in);
+//		int deleteNum = Integer.parseInt(sc.nextLine())-1;
+//		if (deleteNum >= 0 && deleteNum < tierListe.size()) {
+//			String deletedAnimal = tierListe.get(deleteNum).deleteAusgabe(deleteNum);
+//			tierListe.remove(deleteNum);
+//			System.out.println(deletedAnimal + " wurde erfolgreich gelöscht.");
+//		} else {
+//			System.out.println("Ungültige Eingabe");
+//		}
+//	}
 
 }
