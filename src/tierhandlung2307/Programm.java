@@ -1,11 +1,11 @@
 package tierhandlung2307;
 import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.lang.reflect.Parameter;
+import java.util.HashMap;
 
 public class Programm {
     Scanner sc = new Scanner(System.in);
@@ -16,6 +16,9 @@ public class Programm {
     }
     //Kundenliste
     private String oeffnungszeiten = "8:49 - 16:30";
+
+    //Tierliste
+    private ArrayList<Tier> tierliste = new ArrayList<>();
 
 
 
@@ -48,6 +51,7 @@ public class Programm {
                     break;
                 case "4":
                     System.out.println("Menü 4");
+
                     break;
                 case "0":
                     break;
@@ -67,7 +71,7 @@ public class Programm {
             System.out.println("1. Hunde anzeigen");
             System.out.println("2. Katzen anzeigen");
             System.out.println("3. Fische anzeigen");
-            System.out.println("4. Alle anzeigen");
+            System.out.println("4. Testing");
             System.out.println("0. Hauptmenü");
 
             System.out.println("Bitte Auswahl treffen");
@@ -91,7 +95,9 @@ public class Programm {
                     displayAnimals(eingabeTier);
                     break;
                 case 4:
-                    System.out.println("Alle beherbergten Tiere: ");
+                    System.out.println("Testing hund: ");
+                    eingabeTier = "hund";
+                    testing(eingabeTier);
                     break;
                 case 0:
 
@@ -111,28 +117,93 @@ public class Programm {
 
     }
 
+    public void testing(String eingabeTier) throws SQLException {
+        String selectQuery = "SELECT * FROM " + eingabeTier;
+        db.rs = db.stmt.executeQuery(selectQuery);
+        int i = 0;
+        // extract data from result set
+        while (db.rs.next()) {
+
+
+            String name = db.rs.getString("name");
+            String tid = db.rs.getString("tid");
+            int alter = db.rs.getInt("alter");
+            int satt = db.rs.getInt("satt");
+            switch (eingabeTier) {
+                case "hund":
+                    boolean entwurmtHund = db.rs.getBoolean("entwurmt");
+                    String[] kommandos = new String[]{db.rs.getString("kommandos")};
+                    Hund hund = new Hund(name, alter, satt, tid, entwurmtHund, kommandos);
+                    tierliste.add(hund);
+                    System.out.println(tierliste.get(i).ausgabe());
+                    break;
+                case "katze":
+                    boolean entwurmtKatze = db.rs.getBoolean("entwurmt");
+                    boolean hauskatze = db.rs.getBoolean("hauskatze");
+                    Katze katze = new Katze(name, alter, satt, tid, entwurmtKatze, hauskatze);
+                    tierliste.add(katze);
+                    break;
+                case "fisch":
+                    double salzgehalt = db.rs.getDouble("salzgehalt");
+                    Fisch fisch = new Fisch(name, alter, satt, tid, salzgehalt);
+                    tierliste.add(fisch);
+                    break;
+            }
+
+
+            //Display results
+            HashMap<String, String> hundeTest = new HashMap<String, String>();
+            ResultSetMetaData resultSetMetaData = db.rs.getMetaData();
+            int count = resultSetMetaData.getColumnCount();
+            for (int j = 1; j <=count; j++) {
+                System.out.println(resultSetMetaData.getColumnName(j));
+            }
+
+//            System.out.print("_______________________________\n");
+//            System.out.print("ID: " + tier.getId() + "\n");
+//            System.out.print("Name: " + tier.getName() + "\n");
+//            System.out.print("Alter: " + tier.getAlter() + "\n");
+//            System.out.print("Satt: " + tier.getSatt() + "\n");
+        }
+
+
+    }
+
 
 
     public void displayAnimals(String eingabeTier) throws SQLException {
         String selectQuery = "SELECT * FROM " + eingabeTier;
         db.rs = db.stmt.executeQuery(selectQuery);
-
-
+        int i = 0;
         // extract data from result set
         while (db.rs.next()) {
+
+
             String name = db.rs.getString("name");
-            int tid = db.rs.getInt("tid");
-            String alter = db.rs.getString("alter");
+            String tid = db.rs.getString("tid");
+            int alter = db.rs.getInt("alter");
             int satt = db.rs.getInt("satt");
 
+            Tier tier = new Tier(name, alter, satt, tid);
+            tierliste.add(tier);
             //Display results
+            System.out.println(tierliste.get(i).ausgabe());
+            i++;
+            ResultSetMetaData resultSetMetaData = db.rs.getMetaData();
+            int count = resultSetMetaData.getColumnCount();
+            for (int j = 1; j <=count; j++) {
+                System.out.println(resultSetMetaData.getColumnName(j));
+                System.out.println(resultSetMetaData.getColumnTypeName(j));
+            }
 
-            System.out.print("_______________________________\n");
-            System.out.print("ID: " + tid + "\n");
-            System.out.print("Name: " + name + "\n");
-            System.out.print("Alter: " + alter + "\n");
-            System.out.print("Satt: " + satt + "\n");
+//            System.out.print("_______________________________\n");
+//            System.out.print("ID: " + tier.getId() + "\n");
+//            System.out.print("Name: " + tier.getName() + "\n");
+//            System.out.print("Alter: " + tier.getAlter() + "\n");
+//            System.out.print("Satt: " + tier.getSatt() + "\n");
         }
+
+
     }
 
     public void menuAddAnimal() throws SQLException{
@@ -179,6 +250,7 @@ public class Programm {
     }
 
     public void addAnimal(String eingabeTier) throws SQLException {
+        ArrayList<Tier> addAnimalList = new ArrayList<>();
         System.out.println(eingabeTier);
         System.out.println("Name: ");
         String animalName = sc.next();
@@ -186,6 +258,8 @@ public class Programm {
         int animalAge = sc.nextInt();
         System.out.println("Satt: ");
         int animalFed = sc.nextInt();
+//        Tier tier = new Tier(animalName, animalAge, animalFed, 0);
+
 
         String sql = "INSERT INTO " + eingabeTier + "(name, `alter`, satt) VALUES (?, ?, ?)";
         PreparedStatement ps = db.conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);

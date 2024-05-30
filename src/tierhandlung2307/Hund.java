@@ -1,11 +1,13 @@
 package tierhandlung2307;
 
+import java.util.Arrays;
+
 public class Hund extends Tier {
 	boolean entwurmt;
 	String[] kommandos;
 	
-	public Hund (String name, int alter, int satt, boolean entwurmt, String[] kommandos) {
-		super(name, alter, satt);
+	public Hund (String name, int alter, int satt, String id, boolean entwurmt, String[] kommandos) {
+		super(name, alter, satt, id);
 		this.entwurmt = entwurmt;
 		this.kommandos = kommandos;
 	}
@@ -31,4 +33,5 @@ public class Hund extends Tier {
 	public void gassiGehen() {
 		System.out.println("Gassi gehen mit: " + this.getName());
 	}
+
 }

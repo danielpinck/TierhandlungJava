@@ -91,14 +91,14 @@ public class StartHandlung {
 
 	}
 
-	private ArrayList<Tier> ladeDaten() {
-		Tier[] liste = new Tier[100];
-		liste[0] = new Tier("Brutus", 11, 1);
-		liste[1] = new Tier("Chucky", 5, 0);
-		tierListe.add(0, liste[0]);
-		tierListe.add(0, liste[1]);
-		return tierListe;
-	}
+//	private ArrayList<Tier> ladeDaten() {
+//		Tier[] liste = new Tier[100];
+//		liste[0] = new Tier("Brutus", 11, 1);
+//		liste[1] = new Tier("Chucky", 5, 0);
+//		tierListe.add(0, liste[0]);
+//		tierListe.add(0, liste[1]);
+//		return tierListe;
+//	}
 
 	public void displayAnimals() throws SQLException {
 		String selectQuery = "SELECT id, name, type, fed FROM animals";

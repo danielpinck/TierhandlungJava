@@ -4,12 +4,13 @@ public class Tier {
 	private String name;
 	private int alter;
 	private int satt;
-	private int index;
+	private String id;
 	
-	public Tier(String name, int alter, int satt) {
+	public Tier(String name, int alter, int satt, String id) {
 		this.name = name;
-		this.alter = -1;
+		this.alter = alter;
 		this.satt = satt;
+		this.id = id;
 
 	}
 
@@ -17,7 +18,11 @@ public class Tier {
 		System.out.println(name + " muss gefüttert werden");
 	}
 
-	public int getIndex() { return this.index;}
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getId() { return this.id;}
 
 	public void setName(String name){
 		this.name = name;
@@ -38,6 +43,21 @@ public class Tier {
 	}
 	public int getSatt() {
 		return this.satt;
+	}
+
+	public String ausgabe() {
+		System.out.print("_______________________________\n");
+		String ausgabe = "Name: ";
+		ausgabe = ausgabe + getName();
+		ausgabe = ausgabe + "\n";
+		ausgabe = ausgabe + "Alter: " + getAlter();
+		ausgabe = ausgabe + "\n";
+		ausgabe = ausgabe + "Satt: " + getSatt();
+		ausgabe = ausgabe + "\n";
+		ausgabe = ausgabe + "ID: " + getId();
+
+
+		return ausgabe;
 	}
 
 //	public String deleteAusgabe(int index) {
