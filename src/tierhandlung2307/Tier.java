@@ -27,7 +27,7 @@ public class Tier {
 		this.name = name;
 	}
 	public String getName() {
-		return this.name;
+		return "Name: " + this.name;
 	}
 
 	public void setAlter(int alter){

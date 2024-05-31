@@ -18,7 +18,7 @@ public class Programm {
     private String oeffnungszeiten = "8:49 - 16:30";
 
     //Tierliste
-    private ArrayList<Tier> tierliste = new ArrayList<>();
+    private ArrayList<Hund> tierliste = new ArrayList<>();
 
 
 
@@ -82,17 +82,17 @@ public class Programm {
                     //Aufruf Menü 1
                     System.out.println("Beherbergte Hunde: ");
                     eingabeTier = "hund";
-                    displayAnimals(eingabeTier);
+//                    displayAnimals(eingabeTier);
                     break;
                 case 2:
                     System.out.println("Beherbergte Katzen: ");
                     eingabeTier = "katze";
-                    displayAnimals(eingabeTier);
+//                    displayAnimals(eingabeTier);
                     break;
                 case 3:
                     System.out.println("Beherbergte Fische: ");
                     eingabeTier = "fisch";
-                    displayAnimals(eingabeTier);
+//                    displayAnimals(eingabeTier);
                     break;
                 case 4:
                     System.out.println("Testing hund: ");
@@ -136,7 +136,12 @@ public class Programm {
                     String[] kommandos = new String[]{db.rs.getString("kommandos")};
                     Hund hund = new Hund(name, alter, satt, tid, entwurmtHund, kommandos);
                     tierliste.add(hund);
-                    System.out.println(tierliste.get(i).ausgabe());
+                    for (Hund j : tierliste) {
+                        System.out.println(j.getName());
+                        System.out.println(j.getEntwurmt());
+
+                    }
+
 
                     break;
                 case "katze":
@@ -175,41 +180,41 @@ public class Programm {
 
 
 
-    public void displayAnimals(String eingabeTier) throws SQLException {
-
-        String selectQuery = "SELECT * FROM " + eingabeTier;
-        db.rs = db.stmt.executeQuery(selectQuery);
-        int i = 0;
-        // extract data from result set
-        while (db.rs.next()) {
-
-
-            String name = db.rs.getString("name");
-            int tid = db.rs.getInt("tid");
-            int alter = db.rs.getInt("alter");
-            int satt = db.rs.getInt("satt");
-
-            Tier tier = new Tier(name, alter, satt, tid);
-            tierliste.add(tier);
-            //Display results
-            System.out.println(tierliste.get(i).ausgabe());
-            i++;
-            ResultSetMetaData resultSetMetaData = db.rs.getMetaData();
-            int count = resultSetMetaData.getColumnCount();
-            for (int j = 1; j <=count; j++) {
-                System.out.println(resultSetMetaData.getColumnName(j));
-                System.out.println(resultSetMetaData.getColumnTypeName(j));
-            }
-
-//            System.out.print("_______________________________\n");
-//            System.out.print("ID: " + tier.getId() + "\n");
-//            System.out.print("Name: " + tier.getName() + "\n");
-//            System.out.print("Alter: " + tier.getAlter() + "\n");
-//            System.out.print("Satt: " + tier.getSatt() + "\n");
-        }
-
-
-    }
+//    public void displayAnimals(String eingabeTier) throws SQLException {
+//
+//        String selectQuery = "SELECT * FROM " + eingabeTier;
+//        db.rs = db.stmt.executeQuery(selectQuery);
+//        int i = 0;
+//        // extract data from result set
+//        while (db.rs.next()) {
+//
+//
+//            String name = db.rs.getString("name");
+//            int tid = db.rs.getInt("tid");
+//            int alter = db.rs.getInt("alter");
+//            int satt = db.rs.getInt("satt");
+//
+//            Tier tier = new Tier(name, alter, satt, tid);
+//            tierliste.add(tier);
+//            //Display results
+//            System.out.println(tierliste.get(i).ausgabe());
+//            i++;
+//            ResultSetMetaData resultSetMetaData = db.rs.getMetaData();
+//            int count = resultSetMetaData.getColumnCount();
+//            for (int j = 1; j <=count; j++) {
+//                System.out.println(resultSetMetaData.getColumnName(j));
+//                System.out.println(resultSetMetaData.getColumnTypeName(j));
+//            }
+//
+////            System.out.print("_______________________________\n");
+////            System.out.print("ID: " + tier.getId() + "\n");
+////            System.out.print("Name: " + tier.getName() + "\n");
+////            System.out.print("Alter: " + tier.getAlter() + "\n");
+////            System.out.print("Satt: " + tier.getSatt() + "\n");
+//        }
+//
+//
+//    }
 
     public void menuAddAnimal() throws SQLException{
         int eingabe = 1;
