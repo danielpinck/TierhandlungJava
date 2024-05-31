@@ -6,7 +6,7 @@ public class Hund extends Tier {
 	boolean entwurmt;
 	String[] kommandos;
 	
-	public Hund (String name, int alter, int satt, String id, boolean entwurmt, String[] kommandos) {
+	public Hund (String name, int alter, int satt, int id, boolean entwurmt, String[] kommandos) {
 		super(name, alter, satt, id);
 		this.entwurmt = entwurmt;
 		this.kommandos = kommandos;
@@ -33,5 +33,18 @@ public class Hund extends Tier {
 	public void gassiGehen() {
 		System.out.println("Gassi gehen mit: " + this.getName());
 	}
+	public String ausgabeHund() {
+		System.out.print("_______________________________\n");
+		String ausgabe = "Entwurmt: ";
+		ausgabe = ausgabe + getEntwurmt();
+		ausgabe = ausgabe + "\n";
+		ausgabe = ausgabe + "Kommandos: " + Arrays.toString(getKommandos());
+		ausgabe = ausgabe + "\n";
+		ausgabe = ausgabe + "Satt: " + getSatt();
+		ausgabe = ausgabe + "\n";
+		ausgabe = ausgabe + "ID: " + getId();
 
+
+		return ausgabe;
+	}
 }

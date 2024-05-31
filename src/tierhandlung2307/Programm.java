@@ -119,6 +119,7 @@ public class Programm {
 
     public void testing(String eingabeTier) throws SQLException {
         String selectQuery = "SELECT * FROM " + eingabeTier;
+
         db.rs = db.stmt.executeQuery(selectQuery);
         int i = 0;
         // extract data from result set
@@ -126,7 +127,7 @@ public class Programm {
 
 
             String name = db.rs.getString("name");
-            String tid = db.rs.getString("tid");
+            int tid = db.rs.getInt("tid");
             int alter = db.rs.getInt("alter");
             int satt = db.rs.getInt("satt");
             switch (eingabeTier) {
@@ -136,28 +137,31 @@ public class Programm {
                     Hund hund = new Hund(name, alter, satt, tid, entwurmtHund, kommandos);
                     tierliste.add(hund);
                     System.out.println(tierliste.get(i).ausgabe());
+
                     break;
                 case "katze":
                     boolean entwurmtKatze = db.rs.getBoolean("entwurmt");
                     boolean hauskatze = db.rs.getBoolean("hauskatze");
                     Katze katze = new Katze(name, alter, satt, tid, entwurmtKatze, hauskatze);
                     tierliste.add(katze);
+                    System.out.println(tierliste.get(i).ausgabe());
                     break;
                 case "fisch":
                     double salzgehalt = db.rs.getDouble("salzgehalt");
                     Fisch fisch = new Fisch(name, alter, satt, tid, salzgehalt);
                     tierliste.add(fisch);
+                    System.out.println(tierliste.get(i).ausgabe());
                     break;
             }
 
 
             //Display results
-            HashMap<String, String> hundeTest = new HashMap<String, String>();
-            ResultSetMetaData resultSetMetaData = db.rs.getMetaData();
-            int count = resultSetMetaData.getColumnCount();
-            for (int j = 1; j <=count; j++) {
-                System.out.println(resultSetMetaData.getColumnName(j));
-            }
+
+//            ResultSetMetaData resultSetMetaData = db.rs.getMetaData();
+//            int count = resultSetMetaData.getColumnCount();
+//            for (int j = 1; j <=count; j++) {
+//                System.out.println(resultSetMetaData.getColumnName(j));
+//            }
 
 //            System.out.print("_______________________________\n");
 //            System.out.print("ID: " + tier.getId() + "\n");
@@ -172,6 +176,7 @@ public class Programm {
 
 
     public void displayAnimals(String eingabeTier) throws SQLException {
+
         String selectQuery = "SELECT * FROM " + eingabeTier;
         db.rs = db.stmt.executeQuery(selectQuery);
         int i = 0;
@@ -180,7 +185,7 @@ public class Programm {
 
 
             String name = db.rs.getString("name");
-            String tid = db.rs.getString("tid");
+            int tid = db.rs.getInt("tid");
             int alter = db.rs.getInt("alter");
             int satt = db.rs.getInt("satt");
 
