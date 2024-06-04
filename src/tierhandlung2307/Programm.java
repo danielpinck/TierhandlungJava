@@ -1,13 +1,13 @@
 package tierhandlung2307;
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 import java.lang.reflect.Parameter;
-import java.util.HashMap;
 
 public class Programm {
+    private final static int ALTER = 1;
+    private final static int NAME = 2;
+    private final static int ID = 3;
     Scanner sc = new Scanner(System.in);
     private DBconnection db;
 
@@ -18,7 +18,7 @@ public class Programm {
     private String oeffnungszeiten = "8:49 - 16:30";
 
     //Tierliste
-    private ArrayList<Hund> tierliste = new ArrayList<>();
+    private ArrayList<Tier> tierliste = new ArrayList<>();
 
 
 
@@ -82,7 +82,8 @@ public class Programm {
                     //Aufruf Menü 1
                     System.out.println("Beherbergte Hunde: ");
                     eingabeTier = "hund";
-//                    displayAnimals(eingabeTier);
+                    sortedDogs(eingabeTier);
+
                     break;
                 case 2:
                     System.out.println("Beherbergte Katzen: ");
@@ -109,7 +110,43 @@ public class Programm {
         return eingabeTier;
     }
 
-    public void menu2() throws SQLException {
+    public void sortedDogs(String eingabeTier) throws SQLException {
+        int eingabe = 5;
+        while ( eingabe != 0  ) {
+            //Menüausgabe
+            System.out.println("1. Nach Alter sortiert");
+            System.out.println("2. Nach name sortiert");
+            System.out.println("3. Nach ID sortiert");
+            System.out.println("0. Hauptmenü");
+
+            System.out.println("Bitte Auswahl treffen");
+            eingabe = sc.nextInt();
+
+            switch (eingabe) {
+                case 1:
+                    //Aufruf Menü 1
+                    System.out.println("Nach Alter sortiert: ");
+                    eingabeTier = "hund";
+                    displayAnimals(eingabeTier, eingabe);
+                    break;
+                case 2:
+                    System.out.println("Nach Name sortiert: ");
+                    eingabeTier = "katze";
+                    displayAnimals(eingabeTier, eingabe);
+                    break;
+                case 3:
+                    System.out.println("Nach ID sortiert: ");
+                    eingabeTier = "fisch";
+                    displayAnimals(eingabeTier, eingabe);
+                    break;
+                case 0:
+
+                default:
+                    System.out.println("Bitte gültige Auswahl treffen");
+                    System.out.println("-----------------------------");
+            }
+        }
+//        return eingabeTier;
 
     }
 
@@ -122,6 +159,7 @@ public class Programm {
 
         db.rs = db.stmt.executeQuery(selectQuery);
         int i = 0;
+
         // extract data from result set
         while (db.rs.next()) {
 
@@ -136,26 +174,26 @@ public class Programm {
                     String[] kommandos = new String[]{db.rs.getString("kommandos")};
                     Hund hund = new Hund(name, alter, satt, tid, entwurmtHund, kommandos);
                     tierliste.add(hund);
-                    for (Hund j : tierliste) {
+                    for (Tier j : tierliste) {
                         System.out.println(j.getName());
-                        System.out.println(j.getEntwurmt());
+//                        System.out.println(j.getEntwurmt());
 
                     }
 
 
                     break;
                 case "katze":
-                    boolean entwurmtKatze = db.rs.getBoolean("entwurmt");
-                    boolean hauskatze = db.rs.getBoolean("hauskatze");
-                    Katze katze = new Katze(name, alter, satt, tid, entwurmtKatze, hauskatze);
-                    tierliste.add(katze);
-                    System.out.println(tierliste.get(i).ausgabe());
+//                    boolean entwurmtKatze = db.rs.getBoolean("entwurmt");
+//                    boolean hauskatze = db.rs.getBoolean("hauskatze");
+//                    Katze katze = new Katze(name, alter, satt, tid, entwurmtKatze, hauskatze);
+//                    tierliste.add(katze);
+//                    System.out.println(tierliste.get(i).ausgabe());
                     break;
                 case "fisch":
-                    double salzgehalt = db.rs.getDouble("salzgehalt");
-                    Fisch fisch = new Fisch(name, alter, satt, tid, salzgehalt);
-                    tierliste.add(fisch);
-                    System.out.println(tierliste.get(i).ausgabe());
+//                    double salzgehalt = db.rs.getDouble("salzgehalt");
+//                    Fisch fisch = new Fisch(name, alter, satt, tid, salzgehalt);
+//                    tierliste.add(fisch);
+//                    System.out.println(tierliste.get(i).ausgabe());
                     break;
             }
 
@@ -179,42 +217,87 @@ public class Programm {
     }
 
 
+    private boolean vergleicheTier(Tier tier1, Tier tier2, int kriterium) {
+        boolean erg = false;
+        switch (kriterium) {
+            case ALTER:
+                if (tier1.getAlter() > tier2.getAlter()) {
+                    erg = true;
 
-//    public void displayAnimals(String eingabeTier) throws SQLException {
-//
-//        String selectQuery = "SELECT * FROM " + eingabeTier;
-//        db.rs = db.stmt.executeQuery(selectQuery);
-//        int i = 0;
-//        // extract data from result set
-//        while (db.rs.next()) {
-//
-//
-//            String name = db.rs.getString("name");
-//            int tid = db.rs.getInt("tid");
-//            int alter = db.rs.getInt("alter");
-//            int satt = db.rs.getInt("satt");
-//
-//            Tier tier = new Tier(name, alter, satt, tid);
-//            tierliste.add(tier);
-//            //Display results
+                }
+                break;
+            case NAME:
+                if (tier1.getName().compareToIgnoreCase(tier2.getName()) > 0 ){
+                    erg = true;
+                }
+                break;
+            case ID:
+                if (tier1.getId() > (tier2.getId())){
+                    erg = true;
+                }
+                break;
+        }
+        return erg;
+    }
+
+    private void sortTiere(int kriterium) {
+//        Tier k;
+        for (int i = 0; i<tierliste.size(); i++) {
+            for (int j = tierliste.size()-1; j > 0; j--) {
+                if (vergleicheTier(tierliste.get(j-1), tierliste.get(j),kriterium)) {
+//                    k = tierliste.get(j);
+
+                    Collections.swap(tierliste, j-1, j);
+//                    tierliste.set(j, k);
+//                    k = tierliste.get(j);
+//                    tierliste.set(j-1, k);
+                }
+
+            }
+
+        }
+    }
+
+    public void displayAnimals(String eingabeTier, int sortedBy) throws SQLException {
+
+        String selectQuery = "SELECT * FROM " + eingabeTier;
+        db.rs = db.stmt.executeQuery(selectQuery);
+
+        // extract data from result set
+        while (db.rs.next()) {
+
+
+            String name = db.rs.getString("name");
+            int tid = db.rs.getInt("tid");
+            int alter = db.rs.getInt("alter");
+            int satt = db.rs.getInt("satt");
+
+            Tier tier = new Tier(name, alter, satt, tid);
+            tierliste.add(tier);
+
+            //Display results
 //            System.out.println(tierliste.get(i).ausgabe());
-//            i++;
 //            ResultSetMetaData resultSetMetaData = db.rs.getMetaData();
 //            int count = resultSetMetaData.getColumnCount();
 //            for (int j = 1; j <=count; j++) {
 //                System.out.println(resultSetMetaData.getColumnName(j));
 //                System.out.println(resultSetMetaData.getColumnTypeName(j));
 //            }
-//
-////            System.out.print("_______________________________\n");
-////            System.out.print("ID: " + tier.getId() + "\n");
-////            System.out.print("Name: " + tier.getName() + "\n");
-////            System.out.print("Alter: " + tier.getAlter() + "\n");
-////            System.out.print("Satt: " + tier.getSatt() + "\n");
-//        }
-//
-//
-//    }
+
+//            System.out.print("_______________________________\n");
+//            System.out.print("ID: " + tier.getId() + "\n");
+//            System.out.print("Name: " + tier.getName() + "\n");
+//            System.out.print("Alter: " + tier.getAlter() + "\n");
+//            System.out.print("Satt: " + tier.getSatt() + "\n");
+        }
+        sortTiere(sortedBy);
+        for (int l = 0; l < tierliste.size(); l++) {
+            System.out.println(tierliste.get(l).ausgabe());
+        }
+
+
+
+    }
 
     public void menuAddAnimal() throws SQLException{
         int eingabe = 1;
