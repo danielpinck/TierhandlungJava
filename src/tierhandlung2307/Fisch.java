@@ -15,4 +15,8 @@ public class Fisch extends Tier{
     public double getSalzgehalt() {
         return salzgehalt;
     }
+
+    public String ausgabe() {
+        return super.ausgabe() + "\n" +  "Salzgehalt:" + getSalzgehalt();
+    }
 }

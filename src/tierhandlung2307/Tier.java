@@ -46,15 +46,10 @@ public class Tier {
 
 	public String ausgabe() {
 		System.out.print("_______________________________\n");
-		String ausgabe = "Name: ";
-		ausgabe = ausgabe + getName();
-		ausgabe = ausgabe + "\n";
-		ausgabe = ausgabe + "Alter: " + getAlter();
-		ausgabe = ausgabe + "\n";
-		ausgabe = ausgabe + "Satt: " + getSatt();
-		ausgabe = ausgabe + "\n";
-		ausgabe = ausgabe + "ID: " + getId();
-		return ausgabe;
+        return "Name: " + getName() + "\n" +
+				"Alter: " + getAlter() + "\n" +
+				"Satt: " + getSatt() + "\n" +
+				"ID: " + getId();
 	}
 
 //	public String deleteAusgabe(int index) {

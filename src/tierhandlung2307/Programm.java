@@ -82,13 +82,13 @@ public class Programm {
                     //Aufruf Menü 1
                     System.out.println("Beherbergte Hunde: ");
                     eingabeTier = "hund";
-                    sortedDogs(eingabeTier);
+                    sortedMenu(eingabeTier);
 
                     break;
                 case 2:
                     System.out.println("Beherbergte Katzen: ");
                     eingabeTier = "katze";
-//                    displayAnimals(eingabeTier);
+                    sortedMenu(eingabeTier);
                     break;
                 case 3:
                     System.out.println("Beherbergte Fische: ");
@@ -101,6 +101,7 @@ public class Programm {
                     testing(eingabeTier);
                     break;
                 case 0:
+                    tierliste.clear();
 
                 default:
                     System.out.println("Bitte gültige Auswahl treffen");
@@ -110,7 +111,7 @@ public class Programm {
         return eingabeTier;
     }
 
-    public void sortedDogs(String eingabeTier) throws SQLException {
+    public void sortedMenu(String eingabeTier) throws SQLException {
         int eingabe = 5;
         while ( eingabe != 0  ) {
             //Menüausgabe
@@ -126,20 +127,21 @@ public class Programm {
                 case 1:
                     //Aufruf Menü 1
                     System.out.println("Nach Alter sortiert: ");
-                    eingabeTier = "hund";
+//                    eingabeTier = "hund";
                     displayAnimals(eingabeTier, eingabe);
                     break;
                 case 2:
                     System.out.println("Nach Name sortiert: ");
-                    eingabeTier = "katze";
+//                    eingabeTier = "katze";
                     displayAnimals(eingabeTier, eingabe);
                     break;
                 case 3:
                     System.out.println("Nach ID sortiert: ");
-                    eingabeTier = "fisch";
+//                    eingabeTier = "fisch";
                     displayAnimals(eingabeTier, eingabe);
                     break;
                 case 0:
+                    tierliste.clear();
 
                 default:
                     System.out.println("Bitte gültige Auswahl treffen");
@@ -171,7 +173,7 @@ public class Programm {
             switch (eingabeTier) {
                 case "hund":
                     boolean entwurmtHund = db.rs.getBoolean("entwurmt");
-                    String[] kommandos = new String[]{db.rs.getString("kommandos")};
+                    String kommandos = db.rs.getString("kommandos");
                     Hund hund = new Hund(name, alter, satt, tid, entwurmtHund, kommandos);
                     tierliste.add(hund);
                     for (Tier j : tierliste) {
@@ -272,7 +274,26 @@ public class Programm {
             int alter = db.rs.getInt("alter");
             int satt = db.rs.getInt("satt");
 
-            Tier tier = new Tier(name, alter, satt, tid);
+            Tier tier;
+            switch (eingabeTier.toLowerCase()) {
+                case "hund":
+                    boolean entwurmt = db.rs.getBoolean("entwurmt");
+                    String kommandos = db.rs.getString("kommandos");
+                    tier = new Hund(name, alter, satt, tid, entwurmt, kommandos);
+                    break;
+                case "katze":
+                    entwurmt = db.rs.getBoolean("entwurmt");
+                    boolean hauskatze = db.rs.getBoolean("hauskatze");
+                    tier = new Katze(name, alter, satt, tid, entwurmt, hauskatze);
+                    break;
+                case "fisch":
+                    double salzgehalt = db.rs.getDouble("salzgehalt");
+                    tier = new Fisch(name, alter, satt, tid, salzgehalt);
+                    break;
+
+                default:
+                    throw new IllegalArgumentException("Unbekanntes Tier: " + eingabeTier);
+            }
             tierliste.add(tier);
 
             //Display results

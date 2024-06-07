@@ -14,7 +14,7 @@ public class Katze extends Tier {
         this.hauskatze = hauskatze;
     }
 
-    public boolean geHauskatze() {
+    public boolean getHauskatze() {
         return hauskatze;
     }
 
@@ -28,6 +28,11 @@ public class Katze extends Tier {
 
     public void entwurmen() {
         System.out.println("Entwurmt Angabe hier" + this.getName());
+    }
+
+    @Override
+    public String ausgabe() {
+        return super.ausgabe() + "\n" + "Entwurmt: " + getEntwurmt() + "\n" + "Hauskatze:" + getHauskatze();
     }
 
 
